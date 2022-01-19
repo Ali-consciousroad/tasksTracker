@@ -6,14 +6,16 @@ const useHttp = (requestConfig, applyData) => {
   //Specific to the app component
   //const [tasks, setTasks] = useState([]);
 
-  const sendRequest = async (requestConfig) => {
+  const sendRequest = async () => {
     setIsLoading(true);
     setError(null);
     try {
+      /* Verify if the method, header and body are set before forcing the component 
+      to send some dummy data */
       const response = await fetch(requestConfig.url, {
-        method: requestConfig.method,
-        headers: requestConfig.headers,
-        body: JSON.stringify(requestConfig.body),
+        method: requestConfig.method ? requestConfig.method : 'GET',
+        headers: requestConfig.headers ? requestConfig.headers : {},
+        body: requestConfig.body ? JSON.stringify(requestConfig.body) : null,
       });
 
       if (!response.ok) {
@@ -30,7 +32,7 @@ const useHttp = (requestConfig, applyData) => {
   return {
       isLoading, 
       error, 
-      sendRequest, 
+      sendRequest
   };
 };
 
